@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import orlando.leyva.proyectofinal_equipo2.R
+import androidx.compose.foundation.clickable
 
 val VerdePrimario = Color(0xFF2E854B)
 val FondoVerde = Color(0xFF1C7430)
@@ -39,7 +40,7 @@ val GrisSuperficie = Color(0xFFFCFCFC)
 
 @Preview
 @Composable
-fun PantallaEstadisticas() {
+fun PantallaEstadisticas(onBackClick: () -> Unit = {}) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -60,7 +61,7 @@ fun PantallaEstadisticas() {
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                         contentDescription = "Retroceder",
                         tint = Color.White,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(32.dp).clickable { onBackClick() }
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
