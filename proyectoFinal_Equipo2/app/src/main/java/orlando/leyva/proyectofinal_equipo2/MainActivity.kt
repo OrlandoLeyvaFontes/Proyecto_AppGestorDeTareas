@@ -17,6 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import orlando.leyva.proyectofinal_equipo2.ui.theme.ProyectoFinal_Equipo2Theme
 import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaEstadisticas
 import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaEstadisticasHogar
+import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaLogin
+import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaRegistro
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,14 +26,25 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ProyectoFinal_Equipo2Theme {
-                val currentScreen = remember { mutableStateOf("general") }
+                val currentScreen = remember { mutableStateOf("login") }
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        if (currentScreen.value == "general") {
-                            PantallaEstadisticas(onBackClick = { currentScreen.value = "hogar" })
-                        } else {
-                            PantallaEstadisticasHogar(onBack = { currentScreen.value = "general" })
+                        when (currentScreen.value) {
+                            "login" -> PantallaLogin(
+                                onLogin = { currentScreen.value = "general" },
+                                onRegister = { currentScreen.value = "registro" }
+                            )
+                            "registro" -> PantallaRegistro(
+                                onBackToLogin = { currentScreen.value = "login" },
+                                onRegisterClick = { currentScreen.value = "login" }
+                            )
+                            "general" -> PantallaEstadisticas(
+                                onBackClick = { currentScreen.value = "hogar" }
+                            )
+                            "hogar" -> PantallaEstadisticasHogar(
+                                onBack = { currentScreen.value = "general" }
+                            )
                         }
                     }
                 }
