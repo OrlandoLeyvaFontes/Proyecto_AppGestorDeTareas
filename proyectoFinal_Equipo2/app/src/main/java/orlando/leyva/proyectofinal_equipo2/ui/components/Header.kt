@@ -64,10 +64,6 @@ fun Header(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Text(
-            text = titulo,
-            color = Color.White,
-            fontSize = 16.sp
-        )
+
     }
 }

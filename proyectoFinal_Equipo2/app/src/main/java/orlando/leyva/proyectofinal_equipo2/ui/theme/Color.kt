@@ -21,3 +21,6 @@ val VerdeOscuro = Color(0xFF104118)
 val Blanco = Color(0xFFFFFFFF)
 
 val GrisClaro = Color(0xFFF2F2F2)
+
+val ColorCompletar = Color(0xFF003BFF)
+val ColorGrisBotones = Color(0xFFE4E3E1)
