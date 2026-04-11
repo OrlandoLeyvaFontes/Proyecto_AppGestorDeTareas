@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import orlando.leyva.proyectofinal_equipo2.ui.theme.ProyectoFinal_Equipo2Theme
 import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaEstadisticas
+import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaEstadisticasHogar
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,9 +24,15 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ProyectoFinal_Equipo2Theme {
+                val currentScreen = remember { mutableStateOf("general") }
+
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        PantallaEstadisticas()
+                        if (currentScreen.value == "general") {
+                            PantallaEstadisticas(onBackClick = { currentScreen.value = "hogar" })
+                        } else {
+                            PantallaEstadisticasHogar(onBack = { currentScreen.value = "general" })
+                        }
                     }
                 }
             }
