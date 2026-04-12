@@ -1,15 +1,12 @@
 package orlando.leyva.proyectofinal_equipo2.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,19 +18,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import orlando.leyva.proyectofinal_equipo2.R
 import orlando.leyva.proyectofinal_equipo2.ui.components.BottomBar
 import orlando.leyva.proyectofinal_equipo2.ui.components.Header
 import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeClaro
 import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeOscuro
-import orlando.leyva.proyectofinal_equipo2.R
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PantallaConfigurarHogarPreview() {
     PantallaConfigurarHogar()
 }
-
 
 @Composable
 fun PantallaConfigurarHogar() {
@@ -79,93 +74,88 @@ fun PantallaConfigurarHogar() {
                     fontSize = 20.sp,
                     modifier = Modifier.padding(16.dp)
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.White
-                    ),
-
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
                     modifier = Modifier
                         .fillMaxSize()
                         .offset(y = (-25).dp),
-
                     shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
                 ) {
 
                     LazyColumn(
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(16.dp),
+                        contentPadding = PaddingValues(bottom = 70.dp)
                     ) {
 
-                        // 🔹 CASA (con fondo gris)
+                        // CASA
                         item {
-                            Column(
+                            Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .background(Color(0xFFE4E3E1), RoundedCornerShape(12.dp))
-                                    .padding(12.dp)
+                                    .padding(18.dp)
                             ) {
 
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(Color(0xFFE4E3E1), RoundedCornerShape(8.dp))
-                                        .padding(12.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
 
                                     Icon(
                                         painter = painterResource(R.drawable.house),
                                         contentDescription = null,
-                                        modifier = Modifier.size(26.dp),
-                                        tint = Color.Unspecified
+                                        modifier = Modifier.size(50.dp),
+                                        tint = Color(0xFF2560B3)
                                     )
 
                                     Spacer(modifier = Modifier.width(12.dp))
 
                                     Column(modifier = Modifier.weight(1f)) {
-                                        Text(
-                                            "Casa Familia Leyva",
-                                            fontWeight = FontWeight.Bold
-                                        )
-                                        Text(
-                                            "Color: Blanco",
-                                            fontSize = 12.sp
-                                        )
+                                        Text("Casa Familia Leyva", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                                        Spacer(modifier = Modifier.height(10.dp))
+                                        Text("Color de casa: Azul", fontSize = 16.sp)
                                     }
-
-                                    Icon(
-                                        painter = painterResource(R.drawable.editarcasa),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(20.dp),
-                                        tint = Color.Unspecified
-                                    )
                                 }
+
+                                Icon(
+                                    painter = painterResource(R.drawable.editarcasa),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .align(Alignment.TopEnd)
+                                        .size(25.dp),
+                                    tint = Color.Unspecified
+                                )
                             }
 
                             Spacer(modifier = Modifier.height(16.dp))
                         }
 
-                        // 🔹 PERMISOS
+                        // PERMISOS
                         item {
                             Card(
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFFE4E3E1)),
                                 shape = RoundedCornerShape(12.dp),
                                 modifier = Modifier.fillMaxWidth()
                             ) {
                                 Row(
-                                    modifier = Modifier.padding(12.dp),
+                                    modifier = Modifier.padding(18.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
 
                                     Column(modifier = Modifier.weight(1f)) {
-                                        Text("Ajustar Permisos", fontWeight = FontWeight.Bold)
-                                        Text("Permitir a los miembros editar", fontSize = 12.sp)
+                                        Text("Ajustar Permisos de Edición", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                        Text("Permitir a los miembros editar tareas, habitaciones y otros ajustes.", fontSize = 14.sp)
                                     }
 
                                     Switch(
                                         checked = permisos,
-                                        onCheckedChange = { permisos = it }
+                                        onCheckedChange = { permisos = it },
+                                        colors = SwitchDefaults.colors(
+                                            checkedThumbColor = Color.White,
+                                            checkedTrackColor = Color(0xFF4CAF50),
+                                            uncheckedThumbColor = Color.White,
+                                            uncheckedTrackColor = Color.Gray
+                                        )
                                     )
                                 }
                             }
@@ -173,25 +163,35 @@ fun PantallaConfigurarHogar() {
                             Spacer(modifier = Modifier.height(16.dp))
                         }
 
-                        // 🔹 HABITACIONES
+                        // HABITACIONES
                         item {
                             SeccionBloque(
                                 titulo = "Habitaciones",
                                 items = habitaciones,
                                 onAdd = { habitaciones = habitaciones + "Nueva" },
-                                onDelete = { habitaciones = habitaciones - it }
+                                onDelete = { habitaciones = habitaciones - it },
+                                onEdit = { viejo, nuevo ->
+                                    habitaciones = habitaciones.map {
+                                        if (it == viejo) nuevo else it
+                                    }
+                                }
                             )
                         }
 
                         item { Spacer(modifier = Modifier.height(12.dp)) }
 
-                        // 🔹 TAREAS
+                        // TAREAS
                         item {
                             SeccionBloque(
-                                titulo = "Tareas Predeterminadas",
+                                titulo = "Tareas\nPredeterminadas",
                                 items = tareas,
                                 onAdd = { tareas = tareas + "Nueva tarea" },
-                                onDelete = { tareas = tareas - it }
+                                onDelete = { tareas = tareas - it },
+                                onEdit = { viejo, nuevo ->
+                                    tareas = tareas.map {
+                                        if (it == viejo) nuevo else it
+                                    }
+                                }
                             )
                         }
                     }
@@ -206,7 +206,8 @@ fun SeccionBloque(
     titulo: String,
     items: List<String>,
     onAdd: () -> Unit,
-    onDelete: (String) -> Unit
+    onDelete: (String) -> Unit,
+    onEdit: (String, String) -> Unit
 ) {
 
     Column(
@@ -218,17 +219,26 @@ fun SeccionBloque(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(titulo, fontWeight = FontWeight.Bold)
+
+            Text(
+                text = titulo,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f)
+            )
 
             Button(
                 onClick = onAdd,
                 shape = RoundedCornerShape(10.dp),
-                modifier = Modifier.height(34.dp),
-                contentPadding = PaddingValues(horizontal = 10.dp)
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF4CAF50),
+                    contentColor = Color.White
+                ),
+                modifier = Modifier.height(34.dp).width(140.dp)
             ) {
-                Text("+ Agregar", fontSize = 12.sp)
+                Text("+ Agregar", fontSize = 14.sp, fontWeight = FontWeight.Bold)
             }
         }
 
@@ -237,7 +247,8 @@ fun SeccionBloque(
         items.forEach { item ->
             ItemListaCompacto(
                 texto = item,
-                onDelete = { onDelete(item) }
+                onDelete = { onDelete(item) },
+                onEditConfirm = { nuevo -> onEdit(item, nuevo) }
             )
         }
     }
@@ -246,54 +257,77 @@ fun SeccionBloque(
 @Composable
 fun ItemListaCompacto(
     texto: String,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    onEditConfirm: (String) -> Unit
 ) {
+
+    var editando by remember { mutableStateOf(false) }
+    var textoEditado by remember(texto) { mutableStateOf(texto) }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .heightIn(min = 50.dp) // 🔥 cambio clave
             .padding(vertical = 6.dp)
             .background(Color.White, RoundedCornerShape(8.dp))
-            .padding(horizontal = 10.dp, vertical = 8.dp),
+            .padding(horizontal = 10.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
         Icon(
             painter = painterResource(R.drawable.arrow),
             contentDescription = null,
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(25.dp),
             tint = Color.Unspecified
         )
 
         Spacer(modifier = Modifier.width(6.dp))
 
-        Text(
-            texto,
-            modifier = Modifier.weight(1f),
-            fontSize = 14.sp
-        )
-
-        Icon(
-            painter = painterResource(R.drawable.editarcasa),
-            contentDescription = null,
-            modifier = Modifier.size(18.dp),
-            tint = Color.Unspecified
-        )
-
-        Spacer(modifier = Modifier.width(6.dp))
+        if (editando) {
+            TextField(
+                value = textoEditado,
+                onValueChange = { textoEditado = it },
+                modifier = Modifier
+                    .weight(1f)
+                    .height(50.dp),
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent
+                )
+            )
+        } else {
+            Text(
+                texto,
+                modifier = Modifier.weight(1f),
+                fontSize = 16.sp
+            )
+        }
 
         IconButton(
-            onClick = onDelete,
-            modifier = Modifier.size(28.dp)
+            onClick = {
+                if (editando) {
+                    onEditConfirm(textoEditado)
+                }
+                editando = !editando
+            }
         ) {
+            Icon(
+                imageVector = if (editando) Icons.Default.Check else Icons.Default.Edit,
+                contentDescription = null
+            )
+        }
+
+        Spacer(modifier = Modifier.width(6.dp))
+
+        IconButton(onClick = onDelete) {
             Icon(
                 painter = painterResource(R.drawable.delete),
                 contentDescription = null,
-                modifier = Modifier.size(18.dp),
-                tint = Color.Red
+                modifier = Modifier.size(22.dp),
+                tint = Color.Unspecified
             )
         }
     }
 }
-
 
