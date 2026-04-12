@@ -43,7 +43,7 @@ fun PantallaFormTarea(
 ) {
     var nombreTarea by remember { mutableStateOf(if (modoEditar) "Pasear al perro" else "") }
     var descripcionTarea by remember { mutableStateOf(if (modoEditar) "Sacar a pasear al Roky por la colonia durante 30 minutos." else "") }
-    var tipoPredeterminada by remember { mutableStateOf(false) } // false = Predeterminada, true = Manual
+    var tipoPredeterminada by remember { mutableStateOf(false) } // false = Manual (Dias semana), true = Predeterminada (Calendario)
     var recurrencia by remember { mutableStateOf("Semanal") }
     var divisionEquipo by remember { mutableStateOf(false) } // false = Equipo, true = Dias
     var habitacionSeleccionada by remember { mutableStateOf("Toda la casa") }
@@ -114,6 +114,16 @@ fun PantallaFormTarea(
             "$primerosDos ...${miembrosSeleccionados.size - 2} más."
         } else {
             primerosDos
+        }
+    }
+
+    // Logica para bloquear el switch de "Dias"
+    val puedeDividirPorDias = !tipoPredeterminada && diasSeleccionados.size >= 2
+    
+    // Si ya no puede dividir por dias, regresamos a "Equipo"
+    LaunchedEffect(puedeDividirPorDias) {
+        if (!puedeDividirPorDias) {
+            divisionEquipo = false
         }
     }
 
@@ -351,31 +361,41 @@ fun PantallaFormTarea(
                     modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
                 )
 
-                HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = GrisBorde)
+                // Solo mostrar Division de Labores si hay 2 o más miembros seleccionados
+                if (miembrosSeleccionados.size >= 2) {
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = GrisBorde)
 
-                // Division de labores
-                FormLabel("División de labores")
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Equipo", fontWeight = FontWeight.Medium)
-                    Switch(
-                        checked = divisionEquipo,
-                        onCheckedChange = { divisionEquipo = it },
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = Color.Black)
-                    )
-                    Text("Días", fontWeight = FontWeight.Medium)
-                }
+                    // Division de labores
+                    FormLabel("División de labores")
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Equipo", fontWeight = FontWeight.Medium)
+                        Switch(
+                            checked = divisionEquipo,
+                            onCheckedChange = { divisionEquipo = it },
+                            modifier = Modifier.padding(horizontal = 8.dp),
+                            enabled = puedeDividirPorDias, // Bloqueado si no hay al menos 2 dias o si es modo calendario
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = Color.White, 
+                                checkedTrackColor = Color.Black,
+                                disabledCheckedTrackColor = Color.LightGray.copy(alpha = 0.5f)
+                            )
+                        )
+                        Text("Días", fontWeight = FontWeight.Medium, color = if (puedeDividirPorDias) Color.Unspecified else Color.Gray)
+                    }
 
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // Tabla de labores (Solo si NO es Equipo, es decir, si divisionEquipo es true)
-                if (divisionEquipo) {
-                    TableLabores()
                     Spacer(modifier = Modifier.height(8.dp))
+
+                    // Tabla de labores (Solo si se selecciona "Dias")
+                    if (divisionEquipo) {
+                        // Ordenamos los dias seleccionados segun el orden de la semana
+                        val diasOrdenados = diasSemana.filter { diasSeleccionados.contains(it) }
+                        TableLabores(miembros = miembrosSeleccionados, dias = diasOrdenados)
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
                 }
 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = GrisBorde)
@@ -464,7 +484,20 @@ fun FormLabel(text: String, modifier: Modifier = Modifier.padding(bottom = 8.dp)
 }
 
 @Composable
-fun TableLabores() {
+fun TableLabores(miembros: List<String>, dias: List<String>) {
+    // Mapa para distribuir los dias de forma equitativa
+    val asignaciones = mutableMapOf<String, MutableList<String>>()
+    miembros.forEach { asignaciones[it] = mutableListOf() }
+    
+    // Distribucion round-robin
+    dias.forEachIndexed { index, dia ->
+        val miembro = miembros[index % miembros.size]
+        asignaciones[miembro]?.add(dia)
+    }
+
+    // Convertimos las abreviaturas a nombres completos o mantenemos las letras segun prefieras.
+    // Aqui usaremos los nombres de los miembros seleccionados.
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -480,22 +513,32 @@ fun TableLabores() {
             Text("Miembro", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
             Text("Días", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
         }
-        // Rows
-        val filas = listOf(
-            "Orlando" to "Lunes",
-            "Nomar" to "Martes",
-            "Luis" to "Miercoles",
-            "---" to "---"
-        )
-        filas.forEach { (miembro, dias) ->
+        
+        // Filas dinamicas basadas en los miembros seleccionados
+        miembros.forEach { miembro ->
             HorizontalDivider(color = GrisBorde)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(miembro, modifier = Modifier.weight(1f), textAlign = TextAlign.Center, color = GrisTextoSecundario)
-                Text(dias, modifier = Modifier.weight(1f), textAlign = TextAlign.Center, color = GrisTextoSecundario)
+                Text(
+                    text = miembro, 
+                    modifier = Modifier.weight(1f), 
+                    textAlign = TextAlign.Center, 
+                    color = GrisTextoSecundario,
+                    fontSize = 14.sp
+                )
+                
+                val diasDelMiembro = asignaciones[miembro]?.joinToString(", ") ?: "---"
+                Text(
+                    text = diasDelMiembro, 
+                    modifier = Modifier.weight(1f), 
+                    textAlign = TextAlign.Center, 
+                    color = GrisTextoSecundario,
+                    fontSize = 14.sp
+                )
             }
         }
     }
