@@ -14,6 +14,7 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import orlando.leyva.proyectofinal_equipo2.R
 import orlando.leyva.proyectofinal_equipo2.ui.theme.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,17 +42,62 @@ fun PantallaFormTarea(
 ) {
     var nombreTarea by remember { mutableStateOf(if (modoEditar) "Pasear al perro" else "") }
     var descripcionTarea by remember { mutableStateOf(if (modoEditar) "Sacar a pasear al Roky por la colonia durante 30 minutos." else "") }
-    var tipoPredeterminada by remember { mutableStateOf(false) }
+    var tipoPredeterminada by remember { mutableStateOf(false) } // false = Predeterminada, true = Manual
     var recurrencia by remember { mutableStateOf("Semanal") }
-    var divisionEquipo by remember { mutableStateOf(false) }
+    var divisionEquipo by remember { mutableStateOf(false) } // false = Equipo, true = Días
     var habitacionSeleccionada by remember { mutableStateOf("Toda la casa") }
     
     val diasSemana = listOf("L", "M", "X", "J", "V", "S", "D")
 
     // TODO: En una nueva tarea, hacer que se seleccione el dia actual del telefono por defecto
-    val diasSeleccionados = remember { 
+    val diasSeleccionados = remember {
         mutableStateListOf<String>().apply {
             if (modoEditar) addAll(listOf("L", "M", "X"))
+        }
+    }
+
+    // Estado para el DatePicker
+    var showDatePicker by remember { mutableStateOf(false) }
+    val datePickerState = rememberDatePickerState()
+    var fechaSeleccionadaStr by remember { mutableStateOf("Seleccionar dia") }
+
+    if (showDatePicker) {
+        DatePickerDialog(
+            onDismissRequest = { showDatePicker = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    datePickerState.selectedDateMillis?.let { millis ->
+                        val date = Date(millis)
+                        val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                        fechaSeleccionadaStr = formatter.format(date)
+                    }
+                    showDatePicker = false
+                }) {
+                    Text("Aceptar")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDatePicker = false }) {
+                    Text("Cancelar")
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
+
+    // Estado para el Dropdown de Recurrencia
+    var expandedRecurrencia by remember { mutableStateOf(false) }
+    val opcionesRecurrencia = if (tipoPredeterminada) {
+        listOf("Solo una vez", "Semanal", "Mensual", "Anual")
+    } else {
+        listOf("Semanal", "Mensual", "Anual")
+    }
+    
+    // Asegurar que la recurrencia sea válida si cambia el tipo
+    LaunchedEffect(tipoPredeterminada) {
+        if (!tipoPredeterminada && recurrencia == "Solo una vez") {
+            recurrencia = "Semanal"
         }
     }
 
@@ -188,28 +236,43 @@ fun PantallaFormTarea(
 
                 // Dia de la semana
                 FormLabel("Día de la semana")
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    diasSemana.forEach { dia ->
-                        val seleccionado = diasSeleccionados.contains(dia)
-                        Box(
-                            modifier = Modifier
-                                .size(36.dp)
-                                .clip(CircleShape)
-                                .background(if (seleccionado) VerdePrimario else GrisFondoCampos)
-                                .clickable {
-                                    if (seleccionado) diasSeleccionados.remove(dia)
-                                    else diasSeleccionados.add(dia)
-                                },
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = dia,
-                                color = if (seleccionado) Color.White else GrisTextoSecundario,
-                                fontWeight = FontWeight.Medium
-                            )
+                if (tipoPredeterminada) {
+                    Button(
+                        onClick = { showDatePicker = true },
+                        colors = ButtonDefaults.buttonColors(containerColor = VerdePrimario),
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(fechaSeleccionadaStr, color = Color.White, fontWeight = FontWeight.Bold)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Icon(Icons.Default.DateRange, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
+                        }
+                    }
+                } else {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        diasSemana.forEach { dia ->
+                            val seleccionado = diasSeleccionados.contains(dia)
+                            Box(
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .clip(CircleShape)
+                                    .background(if (seleccionado) VerdePrimario else GrisFondoCampos)
+                                    .clickable {
+                                        if (seleccionado) diasSeleccionados.remove(dia)
+                                        else diasSeleccionados.add(dia)
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = dia,
+                                    color = if (seleccionado) Color.White else GrisTextoSecundario,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
                         }
                     }
                 }
@@ -220,14 +283,32 @@ fun PantallaFormTarea(
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                     FormLabel("Recurrencia", modifier = Modifier.padding(bottom = 0.dp).width(IntrinsicSize.Min))
                     Spacer(modifier = Modifier.width(8.dp))
-                    Box(
-                        modifier = Modifier
-                            .border(1.dp, GrisBorde, RoundedCornerShape(8.dp))
-                            .padding(horizontal = 12.dp, vertical = 4.dp)
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(recurrencia)
-                            Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+                    
+                    Box {
+                        Box(
+                            modifier = Modifier
+                                .border(1.dp, GrisBorde, RoundedCornerShape(8.dp))
+                                .clickable { expandedRecurrencia = true }
+                                .padding(horizontal = 12.dp, vertical = 4.dp)
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(recurrencia)
+                                Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+                            }
+                        }
+                        DropdownMenu(
+                            expanded = expandedRecurrencia,
+                            onDismissRequest = { expandedRecurrencia = false }
+                        ) {
+                            opcionesRecurrencia.forEach { opcion ->
+                                DropdownMenuItem(
+                                    text = { Text(opcion) },
+                                    onClick = {
+                                        recurrencia = opcion
+                                        expandedRecurrencia = false
+                                    }
+                                )
+                            }
                         }
                     }
                 }
@@ -275,8 +356,11 @@ fun PantallaFormTarea(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Tabla de labores
-                TableLabores()
+                // Tabla de labores (Solo si NO es Equipo, es decir, si divisionEquipo es true)
+                if (divisionEquipo) {
+                    TableLabores()
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = GrisBorde)
 
