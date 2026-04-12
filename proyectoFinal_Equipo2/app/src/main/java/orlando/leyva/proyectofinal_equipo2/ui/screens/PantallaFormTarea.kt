@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,23 +32,33 @@ import orlando.leyva.proyectofinal_equipo2.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PantallaFormTarea(onBackClick: () -> Unit = {}, onAceptarClick: () -> Unit = {}) {
-    var nombreTarea by remember { mutableStateOf("Pasear al perro") }
-    var descripcionTarea by remember { mutableStateOf("Sacar a pasear al Roky por la colonia durante 30 minutos.") }
+fun PantallaFormTarea(
+    modoEditar: Boolean = false,
+    onBackClick: () -> Unit = {},
+    onAceptarClick: () -> Unit = {}
+) {
+    var nombreTarea by remember { mutableStateOf(if (modoEditar) "Pasear al perro" else "") }
+    var descripcionTarea by remember { mutableStateOf(if (modoEditar) "Sacar a pasear al Roky por la colonia durante 30 minutos." else "") }
     var tipoPredeterminada by remember { mutableStateOf(false) }
     var recurrencia by remember { mutableStateOf("Semanal") }
     var divisionEquipo by remember { mutableStateOf(false) }
     var habitacionSeleccionada by remember { mutableStateOf("Toda la casa") }
-
+    
     val diasSemana = listOf("L", "M", "X", "J", "V", "S", "D")
-    val diasSeleccionados = remember { mutableStateListOf("L", "M", "X") }
+
+    // TODO: En una nueva tarea, hacer que se seleccione el dia actual del telefono por defecto
+    val diasSeleccionados = remember { 
+        mutableStateListOf<String>().apply {
+            if (modoEditar) addAll(listOf("L", "M", "X"))
+        }
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(FondoVerde)
     ) {
-        // Cabecera idéntica a PantallaEstadisticas.kt
+        // Cabecera identica a PantallaEstadisticas.kt
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -112,7 +123,7 @@ fun PantallaFormTarea(onBackClick: () -> Unit = {}, onAceptarClick: () -> Unit =
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Agregar tarea",
+                    text = if (modoEditar) "Editar tarea" else "Agregar tarea",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(vertical = 8.dp)
@@ -144,6 +155,7 @@ fun PantallaFormTarea(onBackClick: () -> Unit = {}, onAceptarClick: () -> Unit =
                     value = nombreTarea,
                     onValueChange = { nombreTarea = it },
                     modifier = Modifier.fillMaxWidth(),
+                    placeholder = { Text("Escribe el nombre de la tarea...") },
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = GrisFondoCampos,
                         unfocusedContainerColor = GrisFondoCampos,
@@ -161,6 +173,7 @@ fun PantallaFormTarea(onBackClick: () -> Unit = {}, onAceptarClick: () -> Unit =
                     value = descripcionTarea,
                     onValueChange = { descripcionTarea = it },
                     modifier = Modifier.fillMaxWidth().heightIn(min = 80.dp),
+                    placeholder = { Text("Describe la tarea...") },
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = GrisFondoCampos,
                         unfocusedContainerColor = GrisFondoCampos,

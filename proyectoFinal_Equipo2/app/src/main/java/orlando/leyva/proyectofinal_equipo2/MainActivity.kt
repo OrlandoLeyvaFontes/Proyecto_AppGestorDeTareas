@@ -19,6 +19,7 @@ import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaEstadisticas
 import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaEstadisticasHogar
 import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaLogin
 import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaRegistro
+import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaFormTarea
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +45,16 @@ class MainActivity : ComponentActivity() {
                             )
                             "hogar" -> PantallaEstadisticasHogar(
                                 onBack = { currentScreen.value = "general" }
+                            )
+                            "agregarTarea" -> PantallaFormTarea(
+                                modoEditar = false,
+                                onBackClick = { currentScreen.value = "hogar" },
+                                onAceptarClick = { currentScreen.value = "hogar" }
+                            )
+                            "editarTarea" -> PantallaFormTarea(
+                                modoEditar = true,
+                                onBackClick = { currentScreen.value = "hogar" },
+                                onAceptarClick = { currentScreen.value = "hogar" }
                             )
                         }
                     }
