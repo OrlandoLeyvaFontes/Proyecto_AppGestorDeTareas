@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import orlando.leyva.proyectofinal_equipo2.R
 import orlando.leyva.proyectofinal_equipo2.ui.components.MemberSelectionDialog
+import orlando.leyva.proyectofinal_equipo2.ui.components.RoomSelectionDialog
 import orlando.leyva.proyectofinal_equipo2.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -116,6 +117,10 @@ fun PantallaFormTarea(
             primerosDos
         }
     }
+
+    // Estado para el dialogo de seleccion de habitaciones
+    var showRoomDialog by remember { mutableStateOf(false) }
+    val habitacionesSeleccionadasList = remember { mutableStateListOf<String>() }
 
     // Logica para bloquear el switch de "Dias"
     val puedeDividirPorDias = !tipoPredeterminada && diasSeleccionados.size >= 2
@@ -422,12 +427,21 @@ fun PantallaFormTarea(
                 }
 
                 Button(
-                    onClick = { },
+                    onClick = { showRoomDialog = true },
                     colors = ButtonDefaults.buttonColors(containerColor = VerdePrimario),
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text("Seleccionar habitación")
+                }
+                
+                // Mostrar habitaciones seleccionadas
+                if (habitacionesSeleccionadasList.isNotEmpty()) {
+                    Text(
+                        text = habitacionesSeleccionadasList.joinToString(", "),
+                        color = GrisTextoSecundario,
+                        modifier = Modifier.fillMaxWidth().padding(top = 4.dp)
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -471,6 +485,18 @@ fun PantallaFormTarea(
             }
         )
     }
+
+    if (showRoomDialog) {
+        RoomSelectionDialog(
+            currentSelected = habitacionesSeleccionadasList,
+            onDismiss = { showRoomDialog = false },
+            onConfirm = { seleccion ->
+                habitacionesSeleccionadasList.clear()
+                habitacionesSeleccionadasList.addAll(seleccion)
+                showRoomDialog = false
+            }
+        )
+    }
 }
 
 @Composable
@@ -494,9 +520,6 @@ fun TableLabores(miembros: List<String>, dias: List<String>) {
         val miembro = miembros[index % miembros.size]
         asignaciones[miembro]?.add(dia)
     }
-
-    // Convertimos las abreviaturas a nombres completos o mantenemos las letras segun prefieras.
-    // Aqui usaremos los nombres de los miembros seleccionados.
 
     Column(
         modifier = Modifier
