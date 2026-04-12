@@ -20,6 +20,7 @@ import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaEstadisticasHogar
 import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaLogin
 import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaRegistro
 import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaFormTarea
+import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaPersonalizarPerfil
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,26 +57,16 @@ class MainActivity : ComponentActivity() {
                                 onBackClick = { currentScreen.value = "hogar" },
                                 onAceptarClick = { currentScreen.value = "hogar" }
                             )
+                            "personalizarPerfil" -> {
+                                PantallaPersonalizarPerfil(
+                                    onBackClick = { currentScreen.value = "hogar" },
+                                    onAceptarClick = { currentScreen.value = "hogar" }
+                                )
+                            }
                         }
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ProyectoFinal_Equipo2Theme {
-        Greeting("Android")
     }
 }

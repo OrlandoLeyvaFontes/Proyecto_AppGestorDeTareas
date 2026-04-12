@@ -44,7 +44,7 @@ fun PantallaFormTarea(
     var descripcionTarea by remember { mutableStateOf(if (modoEditar) "Sacar a pasear al Roky por la colonia durante 30 minutos." else "") }
     var tipoPredeterminada by remember { mutableStateOf(false) } // false = Predeterminada, true = Manual
     var recurrencia by remember { mutableStateOf("Semanal") }
-    var divisionEquipo by remember { mutableStateOf(false) } // false = Equipo, true = Días
+    var divisionEquipo by remember { mutableStateOf(false) } // false = Equipo, true = Dias
     var habitacionSeleccionada by remember { mutableStateOf("Toda la casa") }
     
     val diasSemana = listOf("L", "M", "X", "J", "V", "S", "D")
@@ -94,7 +94,7 @@ fun PantallaFormTarea(
         listOf("Semanal", "Mensual", "Anual")
     }
     
-    // Asegurar que la recurrencia sea válida si cambia el tipo
+    // Asegurar que la recurrencia sea valida si cambia el tipo
     LaunchedEffect(tipoPredeterminada) {
         if (!tipoPredeterminada && recurrencia == "Solo una vez") {
             recurrencia = "Semanal"
@@ -327,6 +327,7 @@ fun PantallaFormTarea(
                     ) {
                         Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
                         Text("Agregar Miembro", fontSize = 12.sp)
+                        // TODO: Agregar componente para mostrar los miembros a obtener
                     }
                 }
                 Text(
