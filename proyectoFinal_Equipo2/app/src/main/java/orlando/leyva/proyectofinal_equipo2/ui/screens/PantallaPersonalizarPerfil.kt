@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import orlando.leyva.proyectofinal_equipo2.R
+import orlando.leyva.proyectofinal_equipo2.ui.components.BiometricDialog
 import orlando.leyva.proyectofinal_equipo2.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,6 +37,8 @@ fun PantallaPersonalizarPerfil(onBackClick: () -> Unit = {}, onAceptarClick: () 
     var rolSeleccionado by remember { mutableStateOf("Administrador") }
     var expandedRol by remember { mutableStateOf(false) }
     val opcionesRol = listOf("Administrador", "Visualizador", "Editor")
+    
+    var showBiometricDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -227,7 +230,7 @@ fun PantallaPersonalizarPerfil(onBackClick: () -> Unit = {}, onAceptarClick: () 
                         Text("Cancelar", color = Color.White, fontWeight = FontWeight.Bold)
                     }
                     Button(
-                        onClick = { onAceptarClick() },
+                        onClick = { showBiometricDialog = true },
                         colors = ButtonDefaults.buttonColors(containerColor = VerdePrimario),
                         modifier = Modifier.weight(1f).height(48.dp),
                         shape = RoundedCornerShape(8.dp)
@@ -237,6 +240,16 @@ fun PantallaPersonalizarPerfil(onBackClick: () -> Unit = {}, onAceptarClick: () 
                 }
             }
         }
+    }
+
+    if (showBiometricDialog) {
+        BiometricDialog(
+            onDismiss = { showBiometricDialog = false },
+            onSuccess = { 
+                showBiometricDialog = false
+                onAceptarClick() 
+            }
+        )
     }
 }
 
