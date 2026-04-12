@@ -23,7 +23,7 @@ import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeOscuro
 fun TaskCard(task: Task) {
 
     val gradiente = Brush.linearGradient(
-        colors = listOf(VerdeClaro, VerdeOscuro)
+        colors = listOf(VerdeOscuro, VerdeClaro)
     )
 
     Box(
