@@ -1,6 +1,5 @@
-package orlando.leyva.proyectofinal_equipo2.screen
+package orlando.leyva.proyectofinal_equipo2.ui.screens
 
-import android.R.attr.padding
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,9 +10,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import orlando.leyva.proyectofinal_equipo2.components.Header
-import orlando.leyva.proyectofinal_equipo2.components.HouseItem
-import orlando.leyva.proyectofinal_equipo2.components.MainButton
+import orlando.leyva.proyectofinal_equipo2.ui.components.Header
+import orlando.leyva.proyectofinal_equipo2.ui.components.HouseItem
+import orlando.leyva.proyectofinal_equipo2.ui.components.MainButton
 import orlando.leyva.proyectofinal_equipo2.model.House
 import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeClaro
 import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeOscuro

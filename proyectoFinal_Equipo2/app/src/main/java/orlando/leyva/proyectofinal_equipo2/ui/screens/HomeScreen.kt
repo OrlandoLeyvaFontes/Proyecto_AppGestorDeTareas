@@ -1,4 +1,4 @@
-package orlando.leyva.proyectofinal_equipo2.screen
+package orlando.leyva.proyectofinal_equipo2.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import kotlin.collections.listOf
@@ -30,11 +29,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import orlando.leyva.proyectofinal_equipo2.R
-import orlando.leyva.proyectofinal_equipo2.components.BottomBar
-import orlando.leyva.proyectofinal_equipo2.components.DaySection
-import orlando.leyva.proyectofinal_equipo2.components.Header
-import orlando.leyva.proyectofinal_equipo2.components.ProgressSection
-import orlando.leyva.proyectofinal_equipo2.components.ToggleTask
+import orlando.leyva.proyectofinal_equipo2.ui.components.BottomBar
+import orlando.leyva.proyectofinal_equipo2.ui.components.DaySection
+import orlando.leyva.proyectofinal_equipo2.ui.components.Header
+import orlando.leyva.proyectofinal_equipo2.ui.components.ProgressSection
+import orlando.leyva.proyectofinal_equipo2.ui.components.ToggleTask
 import orlando.leyva.proyectofinal_equipo2.model.DayTasks
 import orlando.leyva.proyectofinal_equipo2.model.Task
 import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeClaro

@@ -1,4 +1,4 @@
-package orlando.leyva.proyectofinal_equipo2.components
+package orlando.leyva.proyectofinal_equipo2.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

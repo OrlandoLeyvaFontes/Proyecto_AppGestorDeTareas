@@ -1,4 +1,4 @@
-package orlando.leyva.proyectofinal_equipo2.components
+package orlando.leyva.proyectofinal_equipo2.ui.components
 
 import android.widget.Switch
 import androidx.compose.foundation.layout.Arrangement

@@ -1,4 +1,4 @@
-package orlando.leyva.proyectofinal_equipo2.screen
+package orlando.leyva.proyectofinal_equipo2.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import orlando.leyva.proyectofinal_equipo2.components.Header
+import orlando.leyva.proyectofinal_equipo2.ui.components.Header
 import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeClaro
 import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeOscuro
 

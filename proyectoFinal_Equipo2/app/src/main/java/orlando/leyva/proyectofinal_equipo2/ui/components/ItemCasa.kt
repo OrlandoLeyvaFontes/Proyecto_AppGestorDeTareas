@@ -1,4 +1,4 @@
-package orlando.leyva.proyectofinal_equipo2.components
+package orlando.leyva.proyectofinal_equipo2.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
