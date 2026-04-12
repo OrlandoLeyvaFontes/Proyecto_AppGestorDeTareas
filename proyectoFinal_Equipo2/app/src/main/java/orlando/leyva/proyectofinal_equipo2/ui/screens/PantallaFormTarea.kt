@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import orlando.leyva.proyectofinal_equipo2.R
+import orlando.leyva.proyectofinal_equipo2.ui.components.MemberSelectionDialog
 import orlando.leyva.proyectofinal_equipo2.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -98,6 +99,21 @@ fun PantallaFormTarea(
     LaunchedEffect(tipoPredeterminada) {
         if (!tipoPredeterminada && recurrencia == "Solo una vez") {
             recurrencia = "Semanal"
+        }
+    }
+
+    // Estado para el dialogo de seleccion de miembros
+    var showMemberDialog by remember { mutableStateOf(false) }
+    val miembrosSeleccionados = remember { mutableStateListOf<String>() }
+    
+    val textoMiembros = if (miembrosSeleccionados.isEmpty()) {
+        "Ningúno."
+    } else {
+        val primerosDos = miembrosSeleccionados.take(2).joinToString(", ")
+        if (miembrosSeleccionados.size > 2) {
+            "$primerosDos ...${miembrosSeleccionados.size - 2} más."
+        } else {
+            primerosDos
         }
     }
 
@@ -320,18 +336,17 @@ fun PantallaFormTarea(
                     FormLabel("Miembros", modifier = Modifier.padding(bottom = 0.dp).width(IntrinsicSize.Min))
                     Spacer(modifier = Modifier.width(12.dp))
                     Button(
-                        onClick = { },
+                        onClick = { showMemberDialog = true },
                         colors = ButtonDefaults.buttonColors(containerColor = VerdePrimario),
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
                         modifier = Modifier.height(32.dp)
                     ) {
                         Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
                         Text("Agregar Miembro", fontSize = 12.sp)
-                        // TODO: Agregar componente para mostrar los miembros a obtener
                     }
                 }
                 Text(
-                    text = "Orlando, Nomar ...1 más.",
+                    text = textoMiembros,
                     color = GrisTextoSecundario,
                     modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
                 )
@@ -423,6 +438,18 @@ fun PantallaFormTarea(
                 Spacer(modifier = Modifier.height(32.dp))
             }
         }
+    }
+
+    if (showMemberDialog) {
+        MemberSelectionDialog(
+            currentSelected = miembrosSeleccionados,
+            onDismiss = { showMemberDialog = false },
+            onConfirm = { seleccion ->
+                miembrosSeleccionados.clear()
+                miembrosSeleccionados.addAll(seleccion)
+                showMemberDialog = false
+            }
+        )
     }
 }
 
