@@ -14,6 +14,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaConfigurarHogar
+import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaDetalleTarea
 import orlando.leyva.proyectofinal_equipo2.ui.theme.ProyectoFinal_Equipo2Theme
 import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaEstadisticas
 import orlando.leyva.proyectofinal_equipo2.ui.screens.PantallaEstadisticasHogar
@@ -28,11 +30,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ProyectoFinal_Equipo2Theme {
-                val currentScreen = remember { mutableStateOf("login") }
+                val currentScreen = remember { mutableStateOf("detalleTarea") }
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
                         when (currentScreen.value) {
+
+                            "detalleTarea" -> PantallaConfigurarHogar()
+
                             "login" -> PantallaLogin(
                                 onLogin = { currentScreen.value = "general" },
                                 onRegister = { currentScreen.value = "registro" }
