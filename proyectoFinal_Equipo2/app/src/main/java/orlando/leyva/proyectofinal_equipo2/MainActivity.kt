@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ProyectoFinal_Equipo2Theme {
-                val currentScreen = remember { mutableStateOf("personalizarPerfil") }
+                val currentScreen = remember { mutableStateOf("login") }
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
