@@ -28,7 +28,7 @@ fun MemberSelectionDialog(
     onDismiss: () -> Unit,
     onConfirm: (List<String>) -> Unit
 ) {
-    // Lista de miembros de ejemplo (puedes pasarla como parámetro si prefieres)
+    // Lista de miembros de ejemplo
     val miembrosDisponibles = listOf("Nomar Limon", "Orlando Leyva", "Luis Murillo", "---")
     
     val tempSelected = remember { mutableStateListOf<String>().apply { addAll(currentSelected) } }

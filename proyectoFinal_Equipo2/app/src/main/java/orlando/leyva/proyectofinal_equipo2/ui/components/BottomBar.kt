@@ -12,9 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import orlando.leyva.proyectofinal_equipo2.R
 
 @Composable
 fun BottomBar(navController: NavController) {
@@ -28,7 +30,12 @@ fun BottomBar(navController: NavController) {
                     launchSingleTop = true
                 }
             },
-            icon = { /* tu icono Home */ },
+            icon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.home),
+                    contentDescription = "Home", modifier = Modifier.size(18.dp)
+                )
+            },
             label = { Text("Home") }
         )
 
@@ -39,7 +46,12 @@ fun BottomBar(navController: NavController) {
                     launchSingleTop = true
                 }
             },
-            icon = { /* tu icono Stats */ },
+            icon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.stats),
+                    contentDescription = "Home", modifier = Modifier.size(18.dp)
+                )
+            },
             label = { Text("Stats") }
         )
 
@@ -50,7 +62,12 @@ fun BottomBar(navController: NavController) {
                     launchSingleTop = true
                 }
             },
-            icon = { /* tu icono Config */ },
+            icon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.config),
+                    contentDescription = "Home", modifier = Modifier.size(18.dp)
+                )
+            },
             label = { Text("Config") }
         )
     }

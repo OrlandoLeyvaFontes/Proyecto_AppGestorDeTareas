@@ -82,7 +82,8 @@ fun PantallaLogin(onLogin: () -> Unit = {}, onRegister: () -> Unit = {}) {
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color.LightGray,
                     focusedBorderColor = colorVerde
-                )
+                ),
+                visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation()
             )
             
             Spacer(modifier = Modifier.height(8.dp))

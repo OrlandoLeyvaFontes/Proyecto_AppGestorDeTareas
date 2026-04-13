@@ -29,6 +29,18 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate("home_houses") {
                                     popUpTo("login") { inclusive = true }
                                 }
+                            },
+                            onRegister = {
+                                navController.navigate("registro")
+                            }
+                        )
+                    }
+
+                    composable("registro") {
+                        PantallaRegistro(
+                            onBackToLogin = { navController.popBackStack() },
+                            onRegisterClick = {
+                                navController.popBackStack()
                             }
                         )
                     }
@@ -68,7 +80,6 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    // 🔥 IMPORTANTE: estos eran los que te faltaban y te estaban rompiendo el BottomBar
 
                     composable("estadisticas") {
                         PantallaEstadisticas(

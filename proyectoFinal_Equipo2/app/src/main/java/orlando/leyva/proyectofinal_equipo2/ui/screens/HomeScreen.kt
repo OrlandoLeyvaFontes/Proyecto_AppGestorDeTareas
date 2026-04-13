@@ -96,7 +96,7 @@ fun HomeScreen(
 
             Column {
 
-                // ❌ NO BACK EN HOME
+
                 Header(
                     titulo = "Inicio",
                     mostrarBack = false,
