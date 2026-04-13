@@ -18,6 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import orlando.leyva.proyectofinal_equipo2.R
 import orlando.leyva.proyectofinal_equipo2.ui.components.BottomBar
 import orlando.leyva.proyectofinal_equipo2.ui.components.Header
@@ -27,11 +29,14 @@ import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeOscuro
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PantallaConfigurarHogarPreview() {
-    PantallaConfigurarHogar()
+    val navController = rememberNavController()
+    PantallaConfigurarHogar(navController = navController)
 }
 
 @Composable
-fun PantallaConfigurarHogar() {
+fun PantallaConfigurarHogar(
+    navController: NavController
+) {
 
     val gradienteFondo = Brush.horizontalGradient(
         colors = listOf(VerdeOscuro, VerdeClaro)
@@ -54,7 +59,9 @@ fun PantallaConfigurarHogar() {
     }
 
     Scaffold(
-        bottomBar = { BottomBar() }
+        bottomBar = {
+            BottomBar(navController)
+        }
     ) { padding ->
 
         Box(
@@ -66,7 +73,11 @@ fun PantallaConfigurarHogar() {
 
             Column {
 
-                Header("Taskify")
+                Header(
+                    titulo = "Taskify",
+                    mostrarBack = true,
+                    onBack = { navController.popBackStack() }
+                )
 
                 Text(
                     text = "Configurar Hogar",
@@ -95,7 +106,7 @@ fun PantallaConfigurarHogar() {
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .background(Color(0xFFE4E3E1), RoundedCornerShape(12.dp))
+                                    .background(Color(0xFF1E4DB7), RoundedCornerShape(12.dp))
                                     .padding(18.dp)
                             ) {
 
@@ -105,15 +116,15 @@ fun PantallaConfigurarHogar() {
                                         painter = painterResource(R.drawable.house),
                                         contentDescription = null,
                                         modifier = Modifier.size(50.dp),
-                                        tint = Color(0xFF2560B3)
+                                        tint = Color.White
                                     )
 
                                     Spacer(modifier = Modifier.width(12.dp))
 
                                     Column(modifier = Modifier.weight(1f)) {
-                                        Text("Casa Familia Leyva", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                                        Text("Casa Familia Leyva", fontWeight = FontWeight.Bold,color = Color.White, fontSize = 20.sp)
                                         Spacer(modifier = Modifier.height(10.dp))
-                                        Text("Color de casa: Azul", fontSize = 16.sp)
+                                        Text("Color de casa: Azul",color = Color.White, fontSize = 16.sp)
                                     }
                                 }
 
@@ -123,7 +134,7 @@ fun PantallaConfigurarHogar() {
                                     modifier = Modifier
                                         .align(Alignment.TopEnd)
                                         .size(25.dp),
-                                    tint = Color.Unspecified
+                                    tint = Color.White
                                 )
                             }
 

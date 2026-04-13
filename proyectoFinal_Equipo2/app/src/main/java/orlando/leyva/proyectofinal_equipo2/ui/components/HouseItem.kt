@@ -46,12 +46,17 @@ fun HouseItem(
             color = Color.White
         )
 
-        Image(
-            painter = painterResource(id = R.drawable.edit),
-            contentDescription = "Editar",
-            modifier = Modifier.size(32.dp)
-
-        )
+        Box(
+            modifier = Modifier
+                .size(32.dp)
+                .clickable { onEditClick() },
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.edit),
+                contentDescription = "Editar"
+            )
+        }
 
     }
 }

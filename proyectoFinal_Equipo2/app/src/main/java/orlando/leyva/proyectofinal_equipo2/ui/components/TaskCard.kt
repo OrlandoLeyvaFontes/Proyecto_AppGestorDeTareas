@@ -1,6 +1,7 @@
 package orlando.leyva.proyectofinal_equipo2.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,10 +21,13 @@ import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeClaro
 import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeOscuro
 
 @Composable
-fun TaskCard(task: Task) {
+fun TaskCard(
+    task: Task,
+    onClick: () -> Unit = {}
+) {
 
     val gradiente = Brush.linearGradient(
-        colors = listOf(VerdeOscuro, VerdeClaro)
+        listOf(VerdeOscuro, VerdeClaro)
     )
 
     Box(
@@ -31,25 +35,17 @@ fun TaskCard(task: Task) {
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .background(gradiente, RoundedCornerShape(12.dp))
+            .clickable { onClick() }
             .padding(12.dp)
     ) {
 
         Column {
-            Text(
-                text = task.titulo,
-                color = Color.White,
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = task.responsable,
-                color = Color.White,
-                fontSize = 12.sp
-            )
+            Text(task.titulo, color = Color.White)
+            Text(task.responsable, color = Color.White, fontSize = 12.sp)
         }
 
         Text(
-            text = task.estado,
+            task.estado,
             color = Color.White,
             modifier = Modifier.align(Alignment.TopEnd)
         )

@@ -2,6 +2,7 @@ package orlando.leyva.proyectofinal_equipo2.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.Text
@@ -17,10 +18,13 @@ import orlando.leyva.proyectofinal_equipo2.R
 import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeClaro
 import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeOscuro
 
+
+
 @Composable
 fun Header(
     titulo: String,
-    mostrarBack: Boolean = true
+    mostrarBack: Boolean = true,
+    onBack: () -> Unit = {}
 ) {
 
     val gradiente = Brush.horizontalGradient(
@@ -40,7 +44,9 @@ fun Header(
                 Image(
                     painter = painterResource(id = R.drawable.back),
                     contentDescription = "Regresar",
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clickable { onBack() }
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))

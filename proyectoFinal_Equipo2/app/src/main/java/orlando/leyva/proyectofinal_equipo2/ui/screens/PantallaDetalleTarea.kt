@@ -30,6 +30,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import orlando.leyva.proyectofinal_equipo2.ui.components.BottomBar
 import orlando.leyva.proyectofinal_equipo2.ui.components.Header
 import orlando.leyva.proyectofinal_equipo2.ui.theme.ColorCompletar
@@ -41,20 +43,28 @@ import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeOscuro
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PantallaDetalleTareaPreview() {
-    PantallaDetalleTarea()
+    val navController = rememberNavController()
+
+    PantallaDetalleTarea(
+        navController = navController
+    )
 }
 
 
 @Composable
-fun PantallaDetalleTarea() {
+fun PantallaDetalleTarea(
+    navController: NavController,
+    onBack: () -> Unit = {}
+) {
 
-    // MISMO gradiente que HomeScreen
     val gradienteFondo = Brush.horizontalGradient(
         colors = listOf(VerdeOscuro, VerdeClaro)
     )
 
     Scaffold(
-        bottomBar = { BottomBar() }
+        bottomBar = {
+            BottomBar(navController)
+        }
     ) { padding ->
 
         Box(
@@ -66,7 +76,11 @@ fun PantallaDetalleTarea() {
 
             Column {
 
-                Header("Taskify")
+                Header(
+                    titulo = "Taskify",
+                    mostrarBack = true,
+                    onBack = { navController.popBackStack() }
+                )
 
                 Row(
                     modifier = Modifier

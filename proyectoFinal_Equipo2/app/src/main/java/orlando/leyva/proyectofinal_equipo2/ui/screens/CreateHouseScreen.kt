@@ -18,11 +18,13 @@ import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeOscuro
 @Preview(showBackground = true)
 @Composable
 fun CreateHouseScreenPreview() {
-    CreateHouseScreen()
+    CreateHouseScreen(
+        onBack = {}
+    )
 }
 
 @Composable
-fun CreateHouseScreen() {
+fun CreateHouseScreen(onBack: () -> Unit) {
 
     var nombre by remember { mutableStateOf("") }
 
@@ -36,7 +38,11 @@ fun CreateHouseScreen() {
             .background(gradiente)
     ) {
 
-        Header("Crear hogar")
+        Header(
+            titulo = "Crear hogar",
+            mostrarBack = true,
+            onBack = onBack
+        )
 
         Card(
             modifier = Modifier
@@ -52,16 +58,11 @@ fun CreateHouseScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Text(
-                    text = "Código de invitación: 0814",
-                    style = MaterialTheme.typography.titleMedium
-                )
+                Text("Código de invitación: 0814")
 
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text("Nombre")
-
-                Spacer(modifier = Modifier.height(8.dp))
 
                 OutlinedTextField(
                     value = nombre,
@@ -81,4 +82,7 @@ fun CreateHouseScreen() {
                 ) {
                     Text("Guardar")
                 }
-            }}}}
+            }
+        }
+    }
+}

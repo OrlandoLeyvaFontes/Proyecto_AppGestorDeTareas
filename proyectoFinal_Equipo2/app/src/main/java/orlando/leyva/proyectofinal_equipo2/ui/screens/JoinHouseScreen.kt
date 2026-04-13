@@ -17,11 +17,18 @@ import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeOscuro
 @Preview(showBackground = true)
 @Composable
 fun JoinHouseScreenPreview() {
-    JoinHouseScreen()
+    JoinHouseScreen(
+        onBack = {},
+        onCancel = {}
+    )
 }
 
+
 @Composable
-fun JoinHouseScreen() {
+fun JoinHouseScreen(
+    onBack: () -> Unit = {},
+    onCancel: () -> Unit = {}
+) {
 
     var codigo by remember { mutableStateOf("") }
 
@@ -35,7 +42,11 @@ fun JoinHouseScreen() {
             .background(gradiente)
     ) {
 
-        Header("Unirse a hogar")
+        Header(
+            titulo = "Unirse a hogar",
+            mostrarBack = true,
+            onBack = onBack
+        )
 
         Card(
             modifier = Modifier
@@ -94,7 +105,7 @@ fun JoinHouseScreen() {
 
 
                 Button(
-                    onClick = { },
+                    onClick = onCancel,
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error

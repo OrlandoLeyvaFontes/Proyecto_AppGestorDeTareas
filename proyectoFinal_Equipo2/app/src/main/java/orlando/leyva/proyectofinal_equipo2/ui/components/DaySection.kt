@@ -2,29 +2,25 @@ package orlando.leyva.proyectofinal_equipo2.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.material3.Text
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import orlando.leyva.proyectofinal_equipo2.R
 import orlando.leyva.proyectofinal_equipo2.model.DayTasks
+import orlando.leyva.proyectofinal_equipo2.model.Task
 
 @Composable
-fun DaySection(dayTasks: DayTasks) {
+fun DaySection(
+    dayTasks: DayTasks,
+    navController: NavController
+) {
 
     var expandido by remember { mutableStateOf(true) }
-
 
     Column(modifier = Modifier.fillMaxWidth()) {
 
@@ -32,20 +28,20 @@ fun DaySection(dayTasks: DayTasks) {
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { expandido = !expandido }
-                .padding(vertical = 8.dp),
+                .padding(8.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(dayTasks.dia, fontWeight = FontWeight.Bold)
-
-            Image(
-                painter = painterResource(id = R.drawable.arrow_down),
-                contentDescription = null
-            )
         }
 
         if (expandido) {
-            dayTasks.tareas.forEach {
-                TaskCard(it)
+            dayTasks.tareas.forEach { task ->
+                TaskCard(
+                    task = task,
+                    onClick = {
+                        navController.navigate("task_detail")
+                    }
+                )
             }
         }
     }

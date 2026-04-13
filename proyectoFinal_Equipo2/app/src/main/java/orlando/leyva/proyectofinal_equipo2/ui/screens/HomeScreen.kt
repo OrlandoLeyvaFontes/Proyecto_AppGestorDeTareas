@@ -28,6 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import orlando.leyva.proyectofinal_equipo2.R
 import orlando.leyva.proyectofinal_equipo2.ui.components.BottomBar
 import orlando.leyva.proyectofinal_equipo2.ui.components.DaySection
@@ -42,11 +44,14 @@ import orlando.leyva.proyectofinal_equipo2.ui.theme.VerdeOscuro
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    val navController = rememberNavController()
+    HomeScreen(navController = navController)
 }
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavController
+) {
 
     val gradienteFondo = Brush.horizontalGradient(
         colors = listOf(VerdeOscuro, VerdeClaro)
@@ -63,12 +68,15 @@ fun HomeScreen() {
     )
 
     Scaffold(
-
-        bottomBar = { BottomBar() },
+        bottomBar = {
+            BottomBar(navController)
+        },
 
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { }
+                onClick = {
+                    navController.navigate("form_tarea")
+                }
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.add),
@@ -77,7 +85,6 @@ fun HomeScreen() {
                 )
             }
         }
-
     ) { padding ->
 
         Box(
@@ -89,26 +96,24 @@ fun HomeScreen() {
 
             Column {
 
-                Header("Inicio")
+                // ❌ NO BACK EN HOME
+                Header(
+                    titulo = "Inicio",
+                    mostrarBack = false,
+                    onBack = {}
+                )
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        text = "Casa Familia Leyva",
-                        color = Color.White
-                    )
-
-                    Text(
-                        text = "Código: 1834",
-                        color = Color.White
-                    )
+                    Text("Casa Familia Leyva", color = Color.White)
+                    Text("Código: 1834", color = Color.White)
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 Card(
                     modifier = Modifier
@@ -129,7 +134,7 @@ fun HomeScreen() {
 
                         LazyColumn {
                             items(datosDummy) { dia ->
-                                DaySection(dia)
+                                DaySection(dia, navController)
                             }
                         }
                     }
